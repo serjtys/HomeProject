@@ -1,4 +1,4 @@
-from src.widget import mask_account_card, get_date
+from src.widget import get_date, mask_account_card
 
 # Проверка работы виджета
 print(mask_account_card("Maestro 1596837868705199"))

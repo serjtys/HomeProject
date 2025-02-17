@@ -1,4 +1,7 @@
-def get_mask_card_number(card_number: int) -> str:
+from typing import Union
+
+
+def get_mask_card_number(card_number: Union[int, str]) -> str:
     """Функция принимает номер карты, проверяет что бы цифр было меньше 16, скрывает часть
     через пробел выводит скрытый номер"""
     card_number_str = str(card_number)
@@ -8,11 +11,11 @@ def get_mask_card_number(card_number: int) -> str:
         return f"{card_number_str[0:4]} {card_number_str[4:6]}** **** {card_number_str[-4:]} "
 
 
-def get_mask_account(personal_account: int) -> str:
+def get_mask_account(personal_account: Union[int, str]) -> str:
     """Функция принимает номер счета, проверяет что бы цифр было меньше 20, скрывает часть
     через пробел выводит скрытый номер"""
     personal_account_str = str(personal_account)
     if 20 < len(personal_account_str):
         return "Введите 20-и значный номер лицевого счета"
     else:
-        return f"**{personal_account_str[2:]}"
+        return f"**{personal_account_str[-4:]}"
