@@ -13,14 +13,43 @@
 git clone https://github.com/serjtys/HomeProject.git
 ```
 
+### Перейдите в директорию проекта:
+```
+cd HomeProject
+```
+
 ## Использование:
 
-...
+Примеры использования функций:
+```
+from src.widget import get_date, mask_account_card
+
+from src.processing import filter_by_state, sort_by_date
+
+# Пример использования mask_account
+account = "Maestro 1596837868705199"
+mask_card = mask_account_card(account)
+
+# Пример использования get_date
+date = "2024-03-11T02:26:18.671407"
+required_time_format = get_date(date)
+
+# Пример использования filter_by_state
+transactions = [
+    {'id': 41428829, 'state': 'EXECUTED', 'date': '2019-07-03T18:35:29.512364'},
+    {'id': 59402872, 'state': 'CANCELLED', 'date': '2018-09-17T21:27:25.241241'}
+]
+executed_transactions = filter_by_state(transactions)
+
+# Пример использования sort_by_date
+sorted_transactions = sort_by_date(transactions)
+
+```
 
 ## Документация:
 
 Для получения дополнительной информации обратитесь к [документации](/README.md).
 
-## Лицензия:
+## Вклад
 
-Этот проект лицензирован по ...
+Если вы хотите внести свой вклад, пожалуйста, создайте форк репозитория и отправьте пул-реквест.
