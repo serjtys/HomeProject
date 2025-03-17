@@ -14,9 +14,12 @@ def test_filter_by_currency(
     Корректность работы при отсутствии ключа и словаря"""
     usd_transactions = filter_by_currency(transactions, "USD")
     rub_transactions = filter_by_currency(transactions, "RUB")
-    for i in range(2):
+    for i in range(3):
         assert next(usd_transactions) == usd_transactions_correct[i]
         assert next(rub_transactions) == rub_transactions_correct[i]
+    assert list(filter_by_currency([], "")) == ["нет данных"]
+    assert list(filter_by_currency([], "RUB")) == ["нет данных"]
+    assert list(filter_by_currency(["ABC"], "")) == ["нет данных"]
 
 
 def test_transaction_descriptions(transactions: list[Dict], descriptions_correct: Any) -> None:
@@ -25,6 +28,7 @@ def test_transaction_descriptions(transactions: list[Dict], descriptions_correct
     descriptions = transaction_descriptions(transactions)
     for i in range(5):
         assert next(descriptions) == descriptions_correct[i]
+    assert list(transaction_descriptions([])) == ["нет данных"]
 
 
 @pytest.mark.parametrize(
