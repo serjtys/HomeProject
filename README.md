@@ -44,6 +44,19 @@ executed_transactions = filter_by_state(transactions)
 # Пример использования sort_by_date
 sorted_transactions = sort_by_date(transactions)
 
+# Пример использования filter_by_currency
+usd_transactions = filter_by_currency(transactions, "USD")
+for _ in range(2):
+    print(next(usd_transactions))
+
+# Пример использования transaction_descriptions
+descriptions = transaction_descriptions(transactions)
+for _ in range(5):
+    print(next(descriptions))
+
+# Пример использования card_number_generator
+for card_number in card_number_generator(1, 5):
+    print(card_number)
 ```
 
 ## Документация:
@@ -62,6 +75,7 @@ pytest
 - `masks`: функции `get_mask_card_number` и `get_mask_account`.
 - `widget`: функции `mask_account_card` и `get_data`.
 - `processing`: функции `filter_by_state` и `sort_by_date`.
+- `generators`: функции `filter_by_currency` и `transaction_descriptions`; генератор `card_number_generator`
 
 Покрытие тестами составляет более 80% кода проекта.
 
