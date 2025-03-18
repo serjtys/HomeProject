@@ -1,9 +1,15 @@
 import time
+from functools import wraps
 from typing import Any, Callable
 
 
 def log(filename: Any = None) -> Any:
+    """Декоратор, приниает название файла, если он существует, то
+    записывает результат в него, если нет, то выводит в консоль
+    Результатом является время выполнения функции"""
+
     def my_decorator(func: Callable[..., Any]) -> Any:
+        @wraps(func)
         def inner(*args: Any, **kwargs: Any) -> Any:
 
             try:
