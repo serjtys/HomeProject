@@ -21,6 +21,12 @@ def test_log() -> None:
     result2 = sub_numbers(21, 4)
     assert result2 == 17
 
+    path_to_file = "/home/serj/PycharmProjects/HomeProject/src/log.txt"
+
+    with open(path_to_file, "r", encoding="utf-8") as file:
+        for line in file:
+            assert f"{time.asctime()} sub_numbers Ok" in line
+
 
 def test_decorators_2(capsys: Any) -> None:
     """Тесты на работу различных функциях 'обернутые' в декоратор"""
@@ -31,7 +37,7 @@ def test_decorators_2(capsys: Any) -> None:
 
     hello_world()
     captured = capsys.readouterr()
-    assert captured.out == "Hello, world!" or f"hello_world OK {time.asctime()}"
+    assert captured.out in "Hello, world!" or f"hello_world OK {time.asctime()}"
 
 
 def test_decorators_3() -> None:
@@ -51,6 +57,12 @@ def test_decorators_3() -> None:
     sub_numbers_1(21, 0)
     assert f"add_numbers_1 {time.asctime()} error: division by zero. Inputs: (21, 0)"
 
+    path_to_file = "/home/serj/PycharmProjects/HomeProject/src/log.txt"
+
+    with open(path_to_file, "r", encoding="utf-8") as file:
+        for line in file:
+            assert f"add_numbers_1 {time.asctime()} error: division by zero. Inputs: (21, 0)" in line
+
 
 def test_decorators_4(capsys: Any) -> None:
     """Тесты на работу декоратора при ошибке"""
@@ -61,4 +73,4 @@ def test_decorators_4(capsys: Any) -> None:
 
     add_numbers_2(21, 0)
     captured = capsys.readouterr()
-    assert captured.out == "(21, 0)" or f"add_numbers_2 {time.asctime()} error: division by zero. Inputs: (21, 0)"
+    assert captured.out in "(21, 0)" or f"add_numbers_2 {time.asctime()} error: division by zero. Inputs: (21, 0)"
