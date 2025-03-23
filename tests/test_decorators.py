@@ -21,11 +21,9 @@ def test_log() -> None:
     result2 = sub_numbers(21, 4)
     assert result2 == 17
 
-    path_to_file = "src/log.txt"
-
-    with open(path_to_file, "r", encoding="utf-8") as file:
+    with open("log.txt", "r", encoding="utf-8") as file:
         for line in file:
-            assert f"{time.asctime()} sub_numbers Ok" in line
+            assert f"sub_numbers OK {time.asctime()}" in line
 
 
 def test_decorators_2(capsys: Any) -> None:
@@ -55,13 +53,11 @@ def test_decorators_3() -> None:
         return a / b
 
     sub_numbers_1(21, 0)
-    assert f"add_numbers_1 {time.asctime()} error: division by zero. Inputs: (21, 0)"
+    assert f"sub_numbers_1 {time.asctime()} error: division by zero. Inputs: (21, 0)"
 
-    path_to_file = "src/log.txt"
-
-    with open(path_to_file, "r", encoding="utf-8") as file:
+    with open(r"log.txt", "r", encoding="utf-8") as file:
         for line in file:
-            assert f"add_numbers_1 {time.asctime()} error: division by zero. Inputs: (21, 0)" in line
+            assert f"sub_numbers_1 {time.asctime()} error: division by zero. Inputs: (21, 0)" in line
 
 
 def test_decorators_4(capsys: Any) -> None:
