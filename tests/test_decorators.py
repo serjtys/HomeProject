@@ -21,7 +21,7 @@ def test_log() -> None:
     result2 = sub_numbers(21, 4)
     assert result2 == 17
 
-    path_to_file = "/home/serj/PycharmProjects/HomeProject/src/log.txt"
+    path_to_file = "src/log.txt"
 
     with open(path_to_file, "r", encoding="utf-8") as file:
         for line in file:
@@ -57,7 +57,7 @@ def test_decorators_3() -> None:
     sub_numbers_1(21, 0)
     assert f"add_numbers_1 {time.asctime()} error: division by zero. Inputs: (21, 0)"
 
-    path_to_file = "/home/serj/PycharmProjects/HomeProject/src/log.txt"
+    path_to_file = "src/log.txt"
 
     with open(path_to_file, "r", encoding="utf-8") as file:
         for line in file:
