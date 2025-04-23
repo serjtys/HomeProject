@@ -7,6 +7,8 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.11"
+requests = "^2.32.3"
+python-dotenv = "^1.1.0"
 
 
 [tool.poetry.group.lint.dependencies]
@@ -36,3 +38,10 @@ exclude = '.git'
 [tool.isort]
 line_length = 119
 multi_line_output = 1
+
+[tool.coverage.report]
+omit = ["*/site-packages/*", "*/tests/*"]
+
+[tool.coverage.run]
+branch = true
+source = ["src"]

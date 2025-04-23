@@ -57,6 +57,20 @@ for _ in range(5):
 # Пример использования card_number_generator
 for card_number in card_number_generator(1, 5):
     print(card_number)
+    
+# Пример использования decorators.py
+* Для вывода только в консоль
+@log()
+def hello_world() -> None:
+    print("Hello, world!")
+
+*Для вывода в текстовый документ
+@log('log.txt')
+def hello_world() -> None:
+    print("Hello, world!")
+
+for card_number in card_number_generator(1, 5):
+    print(card_number)
 ```
 
 ## Документация:
@@ -76,6 +90,7 @@ pytest
 - `widget`: функции `mask_account_card` и `get_data`.
 - `processing`: функции `filter_by_state` и `sort_by_date`.
 - `generators`: функции `filter_by_currency` и `transaction_descriptions`; генератор `card_number_generator`
+- `decorators`: функции `log`.
 
 Покрытие тестами составляет более 80% кода проекта.
 

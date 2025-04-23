@@ -6,16 +6,25 @@ def filter_by_currency(transactions: Any, currency: Any) -> Any:
     после чего выводит нужные словари с нужным ключом, в случае, когда словарь и
     ключ не заданы, а также если закончились словари, функция заканчивается сообщением
     об отсутствии данных"""
-    for transaction in transactions:
-        if transaction.get("operationAmount", {}).get("currency", {}).get("code") == currency:
-            yield transaction
+    if transactions == [] or currency == "":
+        yield "нет данных"
+    else:
+        for transaction in transactions:
+            if transaction["operationAmount"]["currency"]["code"] == currency:
+                yield transaction
+        else:
+            for transaction in transactions:
+                if transaction["operationAmount"]["currency"]["code"] != currency:
+                    yield "нет данных"
 
 
 def transaction_descriptions(transactions: list[Dict[str, Any]]) -> Iterator[Optional[str]]:
     """Функция принимает список словарей, и выводит строку под определенным ключом,
     в случае отсутствия ключа выводит сообщение об отсутствии данных"""
     for transaction in transactions:
-        yield transaction.get("description")
+        yield transaction["description"]
+    else:
+        yield "нет данных"
 
 
 def card_number_generator(start: int, end: int) -> Any:
@@ -27,6 +36,6 @@ def card_number_generator(start: int, end: int) -> Any:
         number = count_0 + str(i)
         number_format = f"{number[:4]} {number[4:8]} {number[8:12]} {number[12:16]}"
         if len(str(number)) > 16:
-            break
+            yield "Конец свободных номеров"
         else:
             yield number_format
