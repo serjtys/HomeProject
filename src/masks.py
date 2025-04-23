@@ -1,6 +1,8 @@
 import string
 from typing import Union
+
 from logger import masks_logger
+
 
 def get_mask_card_number(card_number: Union[int, str]) -> Union[None | str]:
     """Функция принимает номер карты, проверяет что бы цифр было меньше 16, скрывает часть
@@ -26,6 +28,7 @@ def get_mask_card_number(card_number: Union[int, str]) -> Union[None | str]:
         masks_logger.exception(("Ошибка при обработке номера карты: %s", i))
     return None
 
+
 def get_mask_account(personal_account: Union[int, str]) -> Union[None | str]:
     """Функция принимает номер счета, проверяет что бы цифр было меньше 20, скрывает часть
     через пробел выводит скрытый номер"""
@@ -49,5 +52,6 @@ def get_mask_account(personal_account: Union[int, str]) -> Union[None | str]:
     except ValueError as i:
         masks_logger.exception(("Ошибка при обработке номера счета: %s", i))
     return None
+
 
 print(get_mask_account("asddasasd"))

@@ -1,9 +1,11 @@
 import json
 import os
+
 from logger import utils_logger
 
+
 def load_transactions(file_path):
-    ''' Функция чтения json файлов, принимает в качестве аргумента пусть к файлу'''
+    """Функция чтения json файлов, принимает в качестве аргумента пусть к файлу"""
     if not os.path.isfile(file_path):
         utils_logger.warning("Файл не найден: %s", file_path)
         return []
@@ -21,4 +23,4 @@ def load_transactions(file_path):
     return []
 
 
-print(load_transactions('../data/operations.json'))
+print(load_transactions("../data/operations.json"))
