@@ -1,7 +1,7 @@
 import json
 import os
 
-from logger import utils_logger
+from src.logger import utils_logger
 
 
 def load_transactions(file_path):
