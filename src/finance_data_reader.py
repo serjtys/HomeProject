@@ -1,6 +1,7 @@
-import pandas as pd
 import csv
-from pathlib import Path
+
+import pandas as pd
+
 
 def read_csv_transactions(csv_filepath):
     """
@@ -10,20 +11,20 @@ def read_csv_transactions(csv_filepath):
     """
     try:
         transactions = []
-        with open(csv_filepath, 'r', encoding='utf-8') as file:
+        with open(csv_filepath, "r", encoding="utf-8") as file:
             reader = csv.DictReader(file)
-            if not reader.fieldnames:  # Проверка на пустой файл
+            if not reader.fieldnames:
                 raise ValueError("Файл CSV пуст или не содержит заголовков")
             for row in reader:
                 transactions.append(row)
         return transactions
     except FileNotFoundError:
         raise
-    except ValueError as e:
-        # Пробрасываем ValueError без изменения
+    except ValueError:
         raise
     except Exception as e:
         raise ValueError("Ошибка чтения CSV файла") from e
+
 
 def read_excel_transactions(excel_filepath):
     """
@@ -33,21 +34,21 @@ def read_excel_transactions(excel_filepath):
     """
     try:
         df = pd.read_excel(excel_filepath)
-        if df.empty:  # Проверка на пустой DataFrame
+        if df.empty:
             raise ValueError("Excel файл пуст")
-        return df.to_dict('records')
+        return df.to_dict("records")
     except FileNotFoundError:
         raise
-    except ValueError as e:
-        # Пробрасываем ValueError без изменения
+    except ValueError:
         raise
     except Exception as e:
         raise ValueError("Ошибка чтения Excel файла") from e
 
+
 # Пример использования
-if __name__ == '__main__':
-    csv_file = '../data/transactions.csv'
-    excel_file = '../data/transactions_excel.xlsx'
+if __name__ == "__main__":
+    csv_file = "../data/transactions.csv"
+    excel_file = "../data/transactions_excel.xlsx"
 
     csv_transactions = read_csv_transactions(csv_file)
     excel_transactions = read_excel_transactions(excel_file)

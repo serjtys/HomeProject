@@ -23,14 +23,14 @@ def test_mask_account_card_1(card_or_account: list[tuple[str, str]]) -> None:
         assert mask_account_card(name) == name_mask
 
 
-#def test_mask_account_card_error() -> None:
- #   """Тест проверки на ошибки"""
-  #  with pytest.raises(ValueError):
-   #     mask_account_card("Maestro dsada")
-    #with pytest.raises(ValueError):
-     #   mask_account_card("Счет asd")
-   # with pytest.raises(IndexError):
-    #    mask_account_card(" ")
+# def test_mask_account_card_error() -> None:
+#   """Тест проверки на ошибки"""
+#  with pytest.raises(ValueError):
+#     mask_account_card("Maestro dsada")
+# with pytest.raises(ValueError):
+#   mask_account_card("Счет asd")
+# with pytest.raises(IndexError):
+#    mask_account_card(" ")
 
 
 def test_get_date(date: list[tuple[str, str]]) -> None:

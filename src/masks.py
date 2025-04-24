@@ -41,4 +41,5 @@ def get_mask_account(personal_account: Union[int, str]) -> Union[None | str]:
     masks_logger.info("Успех")
     return f"**{personal_account_str[-4:]}"
 
-#print(get_mask_account("asddasasd"))
+
+# print(get_mask_account("asddasasd"))
