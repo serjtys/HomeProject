@@ -1,37 +1,107 @@
+import json
+import csv
+import openpyxl
+from typing import List, Dict, Union
+from datetime import datetime
+from src.transaction_utils import search_transactions_by_description, count_transactions_by_categories
 from src.processing import filter_by_state, sort_by_date
-from src.widget import get_date, mask_account_card
+from src.widget import mask_account_card, get_date
 
-# Проверка работы виджета
-print(mask_account_card("Maestro 1596837868705199"))
-print(mask_account_card("Счет 64686473678894779589"))
-print(mask_account_card("MasterCard 7158300734726758"))
-print(mask_account_card("Счет 35383033474447895560"))
-print(mask_account_card("Visa Classic 6831982476737658"))
-print(mask_account_card("Visa Platinum 8990922113665229"))
-print(mask_account_card("Visa Gold 5999414228426353"))
-print(mask_account_card("Счет 73654108430135874305"))
-print(get_date("2024-03-11T02:26:18.671407"))
 
-# Проверка функции в новом модуле src/processing
-print(
-    filter_by_state(
-        [
-            {"id": 41428829, "state": "EXECUTED", "date": "2019-07-03T18:35:29.512364"},
-            {"id": 939719570, "state": "EXECUTED", "date": "2018-06-30T02:08:58.425572"},
-            {"id": 594226727, "state": "CANCELED", "date": "2018-09-12T21:27:25.241689"},
-            {"id": 615064591, "state": "CANCELED", "date": "2018-10-14T08:21:33.419441"},
-        ]
-    )
-)
+def load_transactions(file_type: str, filename: str) -> List[Dict[str, Union[str, float]]]:
+    """Загружает транзакции из файла"""
+    try:
+        if file_type == "json":
+            with open(filename, 'r', encoding='utf-8') as f:
+                return json.load(f)
+        elif file_type == "csv":
+            transactions = []
+            with open(filename, 'r', encoding='utf-8') as f:
+                reader = csv.DictReader(f)
+                for row in reader:
+                    transactions.append(row)
+            return transactions
+        elif file_type == "xlsx":
+            workbook = openpyxl.load_workbook(filename)
+            sheet = workbook.active
+            headers = [cell.value for cell in sheet[1]]
+            return [
+                dict(zip(headers, row))
+                for row in sheet.iter_rows(min_row=2, values_only=True)
+            ]
+    except Exception as e:
+        print(f"Ошибка загрузки файла: {e}")
+        return []
 
-# Проверка функции сортировки по времени
-print(
-    sort_by_date(
-        [
-            {"id": 41428829, "state": "EXECUTED", "date": "2019-07-03T18:35:29.512364"},
-            {"id": 939719570, "state": "EXECUTED", "date": "2018-06-30T02:08:58.425572"},
-            {"id": 594226727, "state": "CANCELED", "date": "2018-09-12T21:27:25.241689"},
-            {"id": 615064591, "state": "CANCELED", "date": "2018-10-14T08:21:33.419441"},
-        ]
-    )
-)
+
+def print_transaction(transaction: Dict[str, Union[str, float]]) -> None:
+    """Выводит информацию о транзакции"""
+    date = get_date(transaction.get('date', ''))
+    description = transaction.get('description', '')
+    from_acc = mask_account_card(transaction.get('from', '')) if 'from' in transaction else ''
+    to_acc = mask_account_card(transaction.get('to', ''))
+    amount = transaction.get('operationAmount', {}).get('amount', '')
+    currency = transaction.get('operationAmount', {}).get('currency', {}).get('code', '')
+
+    print(f"{date} {description}")
+    if from_acc:
+        print(f"{from_acc} -> {to_acc}")
+    else:
+        print(f"{to_acc}")
+    print(f"Сумма: {amount} {currency}\n")
+
+
+def main():
+    """Основная логика программы"""
+    print("Привет! Добро пожаловать в программу работы с банковскими транзакциями.")
+    print("Выберите тип файла для загрузки:")
+    print("1. JSON\n2. CSV\n3. XLSX")
+
+    file_type = input("Ваш выбор (1-3): ").strip()
+    file_types = {"1": "json", "2": "csv", "3": "xlsx"}
+
+    if file_type not in file_types:
+        print("Неверный выбор")
+        return
+
+    filename = input("Введите путь к файлу: ").strip()
+    transactions = load_transactions(file_types[file_type], filename)
+
+    if not transactions:
+        print("Не удалось загрузить транзакции")
+        return
+
+    # Фильтрация по статусу
+    while True:
+        status = input("Введите статус (EXECUTED, CANCELED, PENDING): ").upper().strip()
+        if status in {"EXECUTED", "CANCELED", "PENDING"}:
+            break
+        print("Неверный статус")
+
+    transactions = filter_by_state(transactions, status)
+
+    # Сортировка
+    if input("Сортировать по дате? (да/нет): ").lower() == "да":
+        reverse = input("По возрастанию или убыванию? ").lower() == "убыванию"
+        transactions = sort_by_date(transactions, reverse)
+
+    # Поиск по описанию
+    if input("Фильтровать по описанию? (да/нет): ").lower() == "да":
+        search_str = input("Введите строку или регулярное выражение: ")
+        transactions = search_transactions_by_description(transactions, search_str)
+
+    # Вывод результатов
+    print(f"\nНайдено транзакций: {len(transactions)}")
+    for t in transactions:
+        print_transaction(t)
+
+    # Статистика по категориям
+    if transactions:
+        print("\nСтатистика по категориям:")
+        stats = count_transactions_by_categories(transactions)
+        for category, count in stats.items():
+            print(f"{category}: {count}")
+
+
+if __name__ == "__main__":
+    main()
