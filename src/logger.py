@@ -1,8 +1,8 @@
 import logging
 import os
 
-if not os.path.exists("logs"):
-    os.makedirs("logs")
+if not os.path.exists("../logs"):
+    os.makedirs("../logs")
 
 # Настройка логирования для модуля utils
 utils_logger = logging.getLogger("utils")

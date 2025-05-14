@@ -73,6 +73,27 @@ for card_number in card_number_generator(1, 5):
     print(card_number)
 ```
 
+## Новый функционал
+
+### Модуль для работы с CSV и Excel файлами
+
+- `read_transactions_from_csv(file_path: str) -> List[Dict]`: Считывает финансовые операции из CSV файла и возвращает список словарей с транзакциями.
+- `read_transactions_from_excel(file_path: str) -> List[Dict]`: Считывает финансовые операции из Excel файла и возвращает список словарей с транзакциями.
+
+### Примеры использования
+
+```
+from src.finance_data_reader import read_csv_transactions, read_excel_transactions
+
+# Пример использования функции для CSV
+transactions_csv = read_csv_transactions('../data/transactions.csv')
+print(transactions_csv)
+
+# Пример использования функции для Excel
+transactions_excel = read_excel_transactions('../data/transactions.xlsx')
+print(transactions_excel)
+```
+
 ## Документация:
 
 Для получения дополнительной информации обратитесь к [документации](/README.md).
