@@ -9,7 +9,7 @@ RUB = "RUB"
 
 
 def convert_amount(transaction):
-    '''Функция конвертации валюты с использованием API'''
+    """Функция конвертации валюты с использованием API"""
     code = transaction["operationAmount"]["currency"]["code"]
     amount = transaction["operationAmount"]["amount"]
     try:
