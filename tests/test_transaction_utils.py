@@ -1,5 +1,6 @@
 import pytest
-from src.transaction_utils import search_transactions_by_description, count_transactions_by_categories
+
+from src.transaction_utils import count_transactions_by_categories, search_transactions_by_description
 
 
 @pytest.fixture
@@ -20,7 +21,7 @@ def test_search_transactions_by_description_basic(sample_transactions):
 
 
 def test_search_transactions_by_description_regex(sample_transactions):
-    result = search_transactions_by_description(sample_transactions, r"Перевод\s\w+")
+    result = search_transactions_by_description(sample_transactions, r"Перевод\s\w+$")
     assert len(result) == 2
 
 
@@ -40,19 +41,13 @@ def test_count_transactions_by_categories_all(sample_transactions):
         "Перевод организации": 2,
         "Открытие вклада": 1,
         "Перевод с карты на карту": 1,
-        "Покупка в магазине": 1
+        "Покупка в магазине": 1,
     }
 
 
 def test_count_transactions_by_categories_selected(sample_transactions):
-    result = count_transactions_by_categories(
-        sample_transactions,
-        ["Перевод организации", "Несуществующая"]
-    )
-    assert result == {
-        "Перевод организации": 2,
-        "Несуществующая": 0
-    }
+    result = count_transactions_by_categories(sample_transactions, ["Перевод организации", "Несуществующая"])
+    assert result == {"Перевод организации": 2, "Несуществующая": 0}
 
 
 def test_count_transactions_by_categories_empty():

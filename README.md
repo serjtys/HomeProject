@@ -73,26 +73,26 @@ for card_number in card_number_generator(1, 5):
     print(card_number)
 ```
 
-## Новый функционал
+## Интегрированные функции
 
-### Модуль для работы с CSV и Excel файлами
+1. **Загрузка данных**:
+   - Поддержка JSON, CSV и Excel файлов
+   - Использование модулей `finance_data_reader`, `utils`
 
-- `read_transactions_from_csv(file_path: str) -> List[Dict]`: Считывает финансовые операции из CSV файла и возвращает список словарей с транзакциями.
-- `read_transactions_from_excel(file_path: str) -> List[Dict]`: Считывает финансовые операции из Excel файла и возвращает список словарей с транзакциями.
+2. **Фильтрация и сортировка**:
+   - Фильтрация по статусу (`filter_by_state` из `processing.py`)
+   - Сортировка по дате (`sort_by_date` из `processing.py`)
+   - Фильтрация по валюте (`filter_by_currency` из `generators.py`)
 
-### Примеры использования
+3. **Форматирование вывода**:
+   - Маскирование номеров карт и счетов (`mask_account_card` из `widget.py`)
+   - Форматирование дат (`get_date` из `widget.py`)
+   - Конвертация валют через API (`convert_amount` из `external_api.py`)
 
-```
-from src.finance_data_reader import read_csv_transactions, read_excel_transactions
+4. **Логирование**:
+   - Декоратор `@log` для логирования выполнения функций
+   - Логирование в файлы через модуль `logger.py`
 
-# Пример использования функции для CSV
-transactions_csv = read_csv_transactions('../data/transactions.csv')
-print(transactions_csv)
-
-# Пример использования функции для Excel
-transactions_excel = read_excel_transactions('../data/transactions.xlsx')
-print(transactions_excel)
-```
 
 ## Документация:
 

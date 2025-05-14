@@ -1,11 +1,10 @@
 import re
 from collections import Counter
-from typing import List, Dict, Union
+from typing import Dict, List, Union
 
 
 def search_transactions_by_description(
-        transactions: List[Dict[str, Union[str, float]]],
-        search_string: str
+    transactions: List[Dict[str, Union[str, float]]], search_string: str
 ) -> List[Dict[str, Union[str, float]]]:
     """
     Фильтрует транзакции по заданной строке в описании с использованием регулярных выражений.
@@ -19,17 +18,13 @@ def search_transactions_by_description(
     """
     try:
         pattern = re.compile(search_string, re.IGNORECASE)
-        return [
-            t for t in transactions
-            if 'description' in t and pattern.search(t['description'])
-        ]
+        return [t for t in transactions if "description" in t and pattern.search(t["description"])]
     except re.error:
         return []
 
 
 def count_transactions_by_categories(
-        transactions: List[Dict[str, Union[str, float]]],
-        categories: List[str] = None
+    transactions: List[Dict[str, Union[str, float]]], categories: List[str] = None
 ) -> Dict[str, int]:
     """
     Подсчитывает количество транзакций по категориям.
@@ -44,7 +39,7 @@ def count_transactions_by_categories(
     if not transactions:
         return {}
 
-    descriptions = [t.get('description', '') for t in transactions]
+    descriptions = [t.get("description", "") for t in transactions]
     counts = Counter(descriptions)
 
     if categories is None:

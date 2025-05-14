@@ -1,22 +1,23 @@
-import json
 import csv
+import json
+from typing import Dict, List, Union
+
 import openpyxl
-from typing import List, Dict, Union
-from datetime import datetime
-from src.transaction_utils import search_transactions_by_description, count_transactions_by_categories
+
 from src.processing import filter_by_state, sort_by_date
-from src.widget import mask_account_card, get_date
+from src.transaction_utils import count_transactions_by_categories, search_transactions_by_description
+from src.widget import get_date, mask_account_card
 
 
 def load_transactions(file_type: str, filename: str) -> List[Dict[str, Union[str, float]]]:
     """Загружает транзакции из файла"""
     try:
         if file_type == "json":
-            with open(filename, 'r', encoding='utf-8') as f:
+            with open(filename, "r", encoding="utf-8") as f:
                 return json.load(f)
         elif file_type == "csv":
             transactions = []
-            with open(filename, 'r', encoding='utf-8') as f:
+            with open(filename, "r", encoding="utf-8") as f:
                 reader = csv.DictReader(f)
                 for row in reader:
                     transactions.append(row)
@@ -25,10 +26,7 @@ def load_transactions(file_type: str, filename: str) -> List[Dict[str, Union[str
             workbook = openpyxl.load_workbook(filename)
             sheet = workbook.active
             headers = [cell.value for cell in sheet[1]]
-            return [
-                dict(zip(headers, row))
-                for row in sheet.iter_rows(min_row=2, values_only=True)
-            ]
+            return [dict(zip(headers, row)) for row in sheet.iter_rows(min_row=2, values_only=True)]
     except Exception as e:
         print(f"Ошибка загрузки файла: {e}")
         return []
@@ -36,12 +34,12 @@ def load_transactions(file_type: str, filename: str) -> List[Dict[str, Union[str
 
 def print_transaction(transaction: Dict[str, Union[str, float]]) -> None:
     """Выводит информацию о транзакции"""
-    date = get_date(transaction.get('date', ''))
-    description = transaction.get('description', '')
-    from_acc = mask_account_card(transaction.get('from', '')) if 'from' in transaction else ''
-    to_acc = mask_account_card(transaction.get('to', ''))
-    amount = transaction.get('operationAmount', {}).get('amount', '')
-    currency = transaction.get('operationAmount', {}).get('currency', {}).get('code', '')
+    date = get_date(transaction.get("date", ""))
+    description = transaction.get("description", "")
+    from_acc = mask_account_card(transaction.get("from", "")) if "from" in transaction else ""
+    to_acc = mask_account_card(transaction.get("to", ""))
+    amount = transaction.get("operationAmount", {}).get("amount", "")
+    currency = transaction.get("operationAmount", {}).get("currency", {}).get("code", "")
 
     print(f"{date} {description}")
     if from_acc:
@@ -78,7 +76,7 @@ def main():
             break
         print("Неверный статус")
 
-    transactions = filter_by_state(transactions, status)
+    transactions = filter_by_state(transactions, state="EXECUTED")
 
     # Сортировка
     if input("Сортировать по дате? (да/нет): ").lower() == "да":
